@@ -133,9 +133,9 @@ mp = MusicPlayer()
 async def network_status_changed_handler(gc: GroupCall, is_connected: bool):
     if is_connected:
         mp.chat_id = int("-100" + str(gc.full_chat.id))
-        await send_text(f"{emoji.CHECK_MARK_BUTTON} joined the voice chat")
+        await send_text(f"{emoji.CHECK_MARK_BUTTON} bergabung ke obrolan suara")
     else:
-        await send_text(f"{emoji.CROSS_MARK_BUTTON} left the voice chat")
+        await send_text(f"{emoji.CROSS_MARK_BUTTON} keluar dari obrolan suara")
         mp.chat_id = None
 
 
@@ -160,8 +160,8 @@ async def play_track(client, m: Message):
     if m.audio:
         if m.audio.duration > 600:
             reply = await m.reply_text(
-                f"{emoji.ROBOT} audio which duration longer than 10 min "
-                "won't be automatically added to playlist"
+                f"{emoji.ROBOT} audio yang durasinya lebih dari 10 menit "
+                "tidak akan ditambahkan ke playlist secara otomatis"
             )
             await _delay_delete_messages((reply, ), DELETE_DELAY)
             return
@@ -175,7 +175,7 @@ async def play_track(client, m: Message):
     # check already added
     if playlist and playlist[-1].audio.file_unique_id \
             == m_audio.audio.file_unique_id:
-        reply = await m.reply_text(f"{emoji.ROBOT} already added")
+        reply = await m.reply_text(f"{emoji.ROBOT} Telah ditambahkan")
         await _delay_delete_messages((reply, m), DELETE_DELAY)
         return
     # add to playlist
@@ -267,7 +267,7 @@ async def join_group_call(client, m: Message):
     group_call = mp.group_call
     group_call.client = client
     if group_call.is_connected:
-        await m.reply_text(f"{emoji.ROBOT} already joined a voice chat")
+        await m.reply_text(f"{emoji.ROBOT} sudah bergabung dengan obrolan suara")
         return
     await group_call.start(m.chat.id)
     await m.delete()
@@ -299,7 +299,7 @@ async def list_voice_chat(client, m: Message):
         )
     else:
         reply = await m.reply_text(emoji.NO_ENTRY
-                                   + "didn't join any voice chat yet")
+                                   + "belum bergabung dengan obrolan suara apa pun")
     await _delay_delete_messages((reply, m), DELETE_DELAY)
 
 
